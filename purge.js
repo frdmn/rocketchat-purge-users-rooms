@@ -66,10 +66,30 @@ function listChannelsApi(offset = 0){
                 listChannelsApi({"offset":channelsTotal, "count":count});
             } else if(channelsTotal === total){
                 console.log('Success! Found ' + channelArray.length + ' channels in total.');
-                console.log(channelArray);
+
+                channelArray.forEach(channel => {
+                    deleteChannelApi(channel);
+                });
             }
         });
     });
+}
+
+/**
+ * Function to delete a certain public channel
+ * @param {*} id - id of the channel to delete
+ * @return {bool} result
+ */
+function deleteChannelApi(id){
+    rocketChatClient.channels.delete(id, function (err, body) {
+        if (!err) {
+            console.log('Deleted channel #' + id);
+            return true;
+        } else {
+            console.log('Couldn\'t delete channel #' + id);
+            return false;
+        }
+    })
 }
 
 /**
@@ -104,10 +124,30 @@ function listGroupsApi(offset = 0){
                 listGroupsApi({"offset":groupArray.length, "count":count});
             } else if(groupArray.length === total){
                 console.log('Success! Found ' + groupArray.length + ' groups in total.');
-                console.log(groupArray);
+
+                groupArray.forEach(group => {
+                    deleteGroupApi(group);
+                });
             }
         });
     });
+}
+
+/**
+ * Function to delete a certain private group
+ * @param {*} id - id of the group to delete
+ * @return {bool} result
+ */
+function deleteGroupApi(id){
+    rocketChatClient.groups.delete(id, function (err, body) {
+        if (!err) {
+            console.log('Deleted group #' + id);
+            return true;
+        } else {
+            console.log('Couldn\'t delete group #' + id);
+            return false;
+        }
+    })
 }
 
 /**
@@ -132,9 +172,9 @@ function listUsersApi(offset = 0){
         async.eachSeries(users, function(user, cb){
             // Check if user is an admin one
             if (user.roles.indexOf('admin') > -1 || user.roles.indexOf('bot') > -1) {
-                userArray.push(user._id);
-            } else {
                 userArrayExcludes.push(user._id);
+            } else {
+                userArray.push(user._id);
             }
 
             // Callback to let eachSeries() know about current user processing
@@ -149,10 +189,30 @@ function listUsersApi(offset = 0){
                 listUsersApi(usersTotal, count);
             } else if(usersTotal === total){
                 console.log('Success! Found ' + userArray.length + ' users in total.');
-                console.log(userArray);
+
+                userArray.forEach(user => {
+                    deleteUserApi(user);
+                });
             }
         });
     });
+}
+
+/**
+ * Function to delete a certain user
+ * @param {*} id - id of the user to delete
+ * @return {bool} result
+ */
+function deleteUserApi(id){
+    rocketChatClient.users.delete(id, function (err, body) {
+        if (!err) {
+            console.log('Deleted user #' + id);
+            return true;
+        } else {
+            console.log('Couldn\'t delete user #' + id);
+            return false;
+        }
+    })
 }
 
 var packagejson = require('./package.json');
@@ -181,7 +241,7 @@ var rocketChatClient = new RocketChatClient(config);
 // Authenticate using admin credentials stored in config object
 rocketChatClient.authentication.login(config.username, config.password, function(err, body) {
 	if (!err) {
-        listGroupsApi();
+        listUsersApi();
     } else {
         error(err);
 	}
