@@ -19,6 +19,6 @@
   "dependencies": {
     "async": "^2.6.1",
     "commander": "^2.19.0",
-    "rocketchat": "^0.57.3-alpha"
+    "rocketchat": "git://github.com/frdmn/rocketchat-node.git#feature/add-channels.delete-groups.delete"
   }
 }
