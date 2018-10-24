@@ -15,6 +15,17 @@ function success(message){
     return process.exit(1);
 }
 
+/**
+ * Function to write error message to console and also exit the process
+ * with error code 1
+ * @param  {String|Object} err - Object that holds the error message
+ * @param  {Integer} code - Optional status code to exit with (defaults to 1)
+ * @return {Object} process - End process with exit code
+ */
+function error(err, code = 1){
+    console.log("error: ", err);
+    return process.exit(code);
+}
 
 /**
  * Function to repeatetly send rocketChatClient.channels.list()
