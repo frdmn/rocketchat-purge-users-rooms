@@ -33,7 +33,7 @@ function error(err, code = 1){
  * until final page is received
  * @param {Integer} offset - Optional offset can be passed
  */
-function sendChannelsListApiRequest(offset = 0){
+function listChannelsApi(offset = 0){
     var count = 100;
 
     // Actual function of REST client to get the available public channels
@@ -63,7 +63,7 @@ function sendChannelsListApiRequest(offset = 0){
             console.log("Added " + channelArray.length + " to the queue...");
             // Check if there more channels that needs to be processed (with another API request)
             if (channelsTotal < total) {
-                sendChannelsListApiRequest({"offset":channelsTotal, "count":count});
+                listChannelsApi({"offset":channelsTotal, "count":count});
             } else if(channelsTotal === total){
                 console.log('Success! Found ' + channelArray.length + ' channels in total.');
                 console.log(channelArray);
@@ -78,7 +78,7 @@ function sendChannelsListApiRequest(offset = 0){
  * until final page is received
  * @param {Integer} offset - Optional offset can be passed
  */
-function sendGroupsListApiRequest(offset = 0){
+function listGroupsApi(offset = 0){
     var count = 100;
 
     // Actual function of REST client to get the available private groups
@@ -101,7 +101,7 @@ function sendGroupsListApiRequest(offset = 0){
             console.log("Added " + groupArray.length + " to the queue...");
             // Check if there more groups that needs to be processed (with another API request)
             if (groupArray.length < total) {
-                sendGroupsListApiRequest({"offset":groupArray.length, "count":count});
+                listGroupsApi({"offset":groupArray.length, "count":count});
             } else if(groupArray.length === total){
                 console.log('Success! Found ' + groupArray.length + ' groups in total.');
                 console.log(groupArray);
@@ -116,7 +116,7 @@ function sendGroupsListApiRequest(offset = 0){
  * until final page is received
  * @param {Integer} offset - Optional offset can be passed
  */
-function sendUserListApiRequest(offset = 0){
+function listUsersApi(offset = 0){
     var count = 100;
 
     // Actual function of REST client to get the available users
@@ -146,7 +146,7 @@ function sendUserListApiRequest(offset = 0){
             console.log("Added " + userArray.length + " to the queue...");
             // Check if there more users that needs to be processed (with another API request)
             if (usersTotal < total) {
-                sendUserListApiRequest(usersTotal, count);
+                listUsersApi(usersTotal, count);
             } else if(usersTotal === total){
                 console.log('Success! Found ' + userArray.length + ' users in total.');
                 console.log(userArray);
@@ -181,7 +181,7 @@ var rocketChatClient = new RocketChatClient(config);
 // Authenticate using admin credentials stored in config object
 rocketChatClient.authentication.login(config.username, config.password, function(err, body) {
 	if (!err) {
-        sendGroupsListApiRequest();
+        listGroupsApi();
     } else {
         error(err);
 	}
