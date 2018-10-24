@@ -1,0 +1,24 @@
+{
+  "name": "rocketchat-purge-users-rooms",
+  "version": "1.0.0",
+  "description": "CLI tool to purge Rocket.Chat users/rooms",
+  "main": "purge.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frdmn/rocketchat-purge-users-rooms.git"
+  },
+  "author": "Jonas Friedmann <j@frd.mn>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/frdmn/rocketchat-purge-users-rooms/issues"
+  },
+  "homepage": "https://github.com/frdmn/rocketchat-purge-users-rooms#readme",
+  "dependencies": {
+    "async": "^2.6.1",
+    "commander": "^2.19.0",
+    "rocketchat": "^0.57.3-alpha"
+  }
+}
