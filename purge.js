@@ -60,7 +60,7 @@ function sendChannelsListApiRequest(offset = 0){
             var channelsTotal = channelArray.length + channelArrayExcludes.length;
 
             // Iteration completed
-            console.log("Added " + channelArray.length + " channels from this request (" + channelArray.length + " so far)...");
+            console.log("Processed " + channelArray.length + " channels from this request (and added " + channelArray.length + ")...");
             // Check if there more channels that needs to be processed (with another API request)
             if (channelsTotal < total) {
                 sendChannelsListApiRequest({"offset":channelsTotal, "count":count});
