@@ -83,8 +83,9 @@ var channelArray = [],
 program
     .version(packagejson.version)
     .description(packagejson.description)
-    .option('-r, --rooms', 'Purge all (public and private) rooms')
-    .option('-u, --users', 'Purge all (active and inactive) users')
+    .option('-c, --channels', 'Purge all (public) channels')
+    .option('-r, --rooms', 'Purge all (private) rooms/groups')
+    .option('-u, --users', 'Purge all (active and inactive) users except "admin-user"')
     .option('-au, --admin-user <username>', 'Admin user that\'s excluded from the purge')
     .parse(process.argv);
 
