@@ -74,6 +74,7 @@ program
     .description(packagejson.description)
     .option('-r, --rooms', 'Purge all (public and private) rooms')
     .option('-u, --users', 'Purge all (active and inactive) users')
+    .option('-au, --admin-user <username>', 'Admin user that\'s excluded from the purge')
     .parse(process.argv);
 
 // Load configuration object for RocketChat API from JSON
@@ -81,6 +82,12 @@ var config = require('./config.json');
 
 // Create client
 var rocketChatClient = new RocketChatClient(config);
+
+// Check if --admin-user was supplied
+if (!program.adminUser) {
+    program.outputHelp();
+    error('--admin-user required');
+}
 
 // Authenticate using admin credentials stored in config object
 rocketChatClient.authentication.login(config.username, config.password, function(err, body) {
