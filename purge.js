@@ -228,8 +228,8 @@ program
     .version(packagejson.version)
     .description(packagejson.description)
     .option('-c, --channels', 'Purge all (public) channels')
-    .option('-r, --rooms', 'Purge all (private) rooms/groups')
-    .option('-u, --users', 'Purge all (active and inactive) users except "admin-user"')
+    .option('-g, --groups', 'Purge all (private) groups')
+    .option('-u, --users', 'Purge all users except users of roles "admin" and "bot"')
     .parse(process.argv);
 
 // Load configuration object for RocketChat API from JSON
