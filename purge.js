@@ -69,11 +69,13 @@ function listChannelsApi(offset = 0, callback){
             } else if(channelsTotal === total){
                 console.log('Success! Found ' + channelArray.length + ' channels in total.');
 
-                channelArray.forEach(channel => {
-                    deleteChannelApi(channel);
+                async.eachSeries(channelArray, function(channel, cb){
+                    deleteChannelApi(channel, function(){
+                        return cb(null);
+                    });
+                }, function(err){
+                    return callback(true);
                 });
-
-                return callback(true);
             }
         });
     });
@@ -84,14 +86,14 @@ function listChannelsApi(offset = 0, callback){
  * @param {*} id - id of the channel to delete
  * @return {bool} result
  */
-function deleteChannelApi(id){
+function deleteChannelApi(id, callback){
     rocketChatClient.channels.delete(id, function (err, body) {
         if (!err) {
             console.log('Deleted channel #' + id);
-            return true;
+            return callback(true);
         } else {
             console.log('Couldn\'t delete channel #' + id);
-            return false;
+            return callback(false);
         }
     })
 }
@@ -131,11 +133,13 @@ function listGroupsApi(offset = 0, callback){
             } else if(groupArray.length === total){
                 console.log('Success! Found ' + groupArray.length + ' groups in total.');
 
-                groupArray.forEach(group => {
-                    deleteGroupApi(group);
+                async.eachSeries(groupArray, function(group, cb){
+                    deleteGroupApi(group, function(){
+                        return cb(null);
+                    });
+                }, function(err){
+                    return callback(true);
                 });
-
-                return callback(true);
             }
         });
     });
@@ -146,14 +150,14 @@ function listGroupsApi(offset = 0, callback){
  * @param {*} id - id of the group to delete
  * @return {bool} result
  */
-function deleteGroupApi(id){
+function deleteGroupApi(id, callback){
     rocketChatClient.groups.delete(id, function (err, body) {
         if (!err) {
             console.log('Deleted group #' + id);
-            return true;
+            return callback(true);
         } else {
             console.log('Couldn\'t delete group #' + id);
-            return false;
+            return callback(false);
         }
     })
 }
@@ -200,11 +204,13 @@ function listUsersApi(offset = 0, callback){
             } else if(usersTotal === total){
                 console.log('Success! Found ' + userArray.length + ' users in total.');
 
-                userArray.forEach(user => {
-                    deleteUserApi(user);
+                async.eachSeries(userArray, function(user, cb){
+                    deleteUserApi(user, function(){
+                        return cb(null);
+                    });
+                }, function(err){
+                    return callback(true);
                 });
-
-                return callback(true);
             }
         });
     });
@@ -215,14 +221,14 @@ function listUsersApi(offset = 0, callback){
  * @param {*} id - id of the user to delete
  * @return {bool} result
  */
-function deleteUserApi(id){
+function deleteUserApi(id, callback){
     rocketChatClient.users.delete(id, function (err, body) {
         if (!err) {
             console.log('Deleted user #' + id);
-            return true;
+            return callback(true);
         } else {
             console.log('Couldn\'t delete user #' + id);
-            return false;
+            return callback(false);
         }
     })
 }
@@ -255,23 +261,34 @@ if (program.channels || program.groups || program.users) {
     rocketChatClient.authentication.login(config.username, config.password, function(err, body) {
         // Check for errors upon authorization
         if (!err) {
-            if (program.channels) {
-                listChannelsApi(null, function(){
-                    console.log('Channels deleted!');
-                });
-            }
-
-            if(program.groups){
-                listGroupsApi(null, function(){
-                    console.log('Groups deleted!');
-                });
-            }
-
-            if(program.users){
-                listUsersApi(null, function(){
-                    console.log('Users deleted!');
-                });
-            }
+            async.series([
+                function(cback){
+                    if (program.channels) {
+                        listChannelsApi(null, function(){
+                            console.log('Channels deleted!');
+                            cback(null);
+                        });
+                    }
+                },
+                function(cback){
+                    if(program.groups){
+                        listGroupsApi(null, function(){
+                            console.log('Groups deleted!');
+                            cback(null);
+                        });
+                    }
+                },
+                function(cback){
+                    if(program.users){
+                        listUsersApi(null, function(){
+                            console.log('Users deleted!');
+                            cback(null);
+                        });
+                    }
+                }
+            ], function () {
+                console.log('done');
+            });
         } else {
             error(err);
         }
