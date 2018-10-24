@@ -49,27 +49,27 @@ Here's a short explanation how to use `rocketchat-purge-users-rooms`:
 
 #### Purge channels, groups and users
 
-    ```shell
-    $ node purge.js -c -g -u
-    ```
+```shell
+$ node purge.js -c -g -u
+```
 
 #### Purge public channels
 
-    ```shell
-    $ node purge.js -c
-    ```
+```shell
+$ node purge.js -c
+```
 
 #### Purge private groups
 
-    ```shell
-    $ node purge.js -g
-    ```
+```shell
+$ node purge.js -g
+```
 
 #### Purge users
 
-    ```shell
-    $ node purge.js -u
-    ```
+```shell
+$ node purge.js -u
+```
 
 ## Contributing
 
