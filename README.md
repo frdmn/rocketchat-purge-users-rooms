@@ -11,7 +11,15 @@ Simple Node CLI tool to purge either all users and/or all groups (private and pu
     git clone https://github.com/frdmn/rocketchat-purge-users-rooms
     ```
 
-3. Copy and adjust configuration file from sample:
+3. Install the project dependencies:
+
+    ```shell
+    npm install
+    ```
+
+## Usage
+
+1. Copy and adjust configuration file from sample:
 
     ```shell
     cp config.sample.json config.json
@@ -20,32 +28,22 @@ Simple Node CLI tool to purge either all users and/or all groups (private and pu
 
     Make sure it contains proper user (with administration access) credentials
 
-4. Install the project dependencies:
-
-    ```shell
-    npm install
-    ```
-
-## Usage
-
-Here's a short explanation how to use `rocketchat-purge-users-rooms`:
-
 #### Show man/help page:
 
-    ```shell
-    $ node purge.js
-    Usage: purge [options]
+```shell
+$ node purge.js
+Usage: purge [options]
 
-    CLI tool to purge Rocket.Chat users/rooms
+CLI tool to purge Rocket.Chat users/rooms
 
-    Options:
-    -V, --version   output the version number
-    -c, --channels  Purge all (public) channels
-    -g, --groups    Purge all (private) groups
-    -u, --users     Purge all users except users of roles "admin" and "bot"
-    -h, --help      output usage information
-    error:  No option passed. Aborting...
-    ```
+Options:
+-V, --version   output the version number
+-c, --channels  Purge all (public) channels
+-g, --groups    Purge all (private) groups
+-u, --users     Purge all users except users of roles "admin" and "bot"
+-h, --help      output usage information
+error:  No option passed. Aborting...
+```
 
 #### Purge channels, groups and users
 
