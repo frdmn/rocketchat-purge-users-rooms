@@ -71,6 +71,52 @@ function sendChannelsListApiRequest(offset = 0){
         });
     });
 }
+
+/**
+ * Function to repeatetly send rocketChatClient.users.list()
+ * to iterate over result pagination (default max count = 100)
+ * until final page is received
+ * @param {Integer} offset - Optional offset can be passed
+ */
+function sendUserListApiRequest(offset = 0){
+    var count = 100;
+
+    // Actual function of REST client to get the available users
+    rocketChatClient.users.list(offset, count, function (err, body) {
+        if (err) {
+            error(err);
+        }
+
+        var total = body.total,
+            users = body.users;
+
+        // Iterate over each user (asynchronously to not start another request until iteration is completed)
+        async.eachSeries(users, function(user, cb){
+            // Check if user is an admin one
+            if (user.roles.indexOf('admin') > -1 || user.roles.indexOf('bot') > -1) {
+                userArray.push(user._id);
+            } else {
+                userArrayExcludes.push(user._id);
+            }
+
+            // Callback to let eachSeries() know about current user processing
+            return cb(null);
+        },function(err) {
+            var usersTotal = userArray.length + userArrayExcludes.length;
+
+            // Iteration completed
+            console.log("Processed " + users.length + " users from this request (and added " + userArray.length + ")...");
+            // Check if there more users that needs to be processed (with another API request)
+            if (usersTotal < total) {
+                sendUserListApiRequest(usersTotal, count);
+            } else if(usersTotal === total){
+                console.log('Success! Found ' + userArray.length + ' users in total.');
+                console.log(userArray);
+            }
+        });
+    });
+}
+
 var packagejson = require('./package.json');
 
 // Empty arrays that will hold the objects
