@@ -60,7 +60,7 @@ function sendChannelsListApiRequest(offset = 0){
             var channelsTotal = channelArray.length + channelArrayExcludes.length;
 
             // Iteration completed
-            console.log("Processed " + channelArray.length + " channels from this request (and added " + channelArray.length + ")...");
+            console.log("Added " + channelArray.length + " to the queue...");
             // Check if there more channels that needs to be processed (with another API request)
             if (channelsTotal < total) {
                 sendChannelsListApiRequest({"offset":channelsTotal, "count":count});
@@ -105,7 +105,7 @@ function sendUserListApiRequest(offset = 0){
             var usersTotal = userArray.length + userArrayExcludes.length;
 
             // Iteration completed
-            console.log("Processed " + users.length + " users from this request (and added " + userArray.length + ")...");
+            console.log("Added " + userArray.length + " to the queue...");
             // Check if there more users that needs to be processed (with another API request)
             if (usersTotal < total) {
                 sendUserListApiRequest(usersTotal, count);
@@ -122,9 +122,9 @@ var packagejson = require('./package.json');
 // Empty arrays that will hold the objects
 var channelArray = [],
     channelArrayExcludes = [],
+    groupArray = [],
     userArray = [],
-    userArrayExcludes = [],
-    roomsArray = [];
+    userArrayExcludes = [];
 
 program
     .version(packagejson.version)
