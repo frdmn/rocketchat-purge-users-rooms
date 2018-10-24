@@ -73,6 +73,44 @@ function sendChannelsListApiRequest(offset = 0){
 }
 
 /**
+ * Function to repeatetly send rocketChatClient.groups.list()
+ * to iterate over result pagination (default max count = 100)
+ * until final page is received
+ * @param {Integer} offset - Optional offset can be passed
+ */
+function sendGroupsListApiRequest(offset = 0){
+    var count = 100;
+
+    // Actual function of REST client to get the available private groups
+    rocketChatClient.groups.list({"offset":offset, "count":count}, function (err, body) {
+        if (err) {
+            error(err);
+        }
+
+        var total = body.total,
+            groups = body.groups;
+
+        // Iterate over each group (asynchronously to not start another request until iteration is completed)
+        async.eachSeries(groups, function(group, cb){
+            groupArray.push(group._id);
+
+            // Callback to let eachSeries() know about current group processing
+            return cb(null);
+        },function(err) {
+            // Iteration completed
+            console.log("Added " + groupArray.length + " to the queue...");
+            // Check if there more groups that needs to be processed (with another API request)
+            if (groupArray.length < total) {
+                sendGroupsListApiRequest({"offset":groupArray.length, "count":count});
+            } else if(groupArray.length === total){
+                console.log('Success! Found ' + groupArray.length + ' groups in total.');
+                console.log(groupArray);
+            }
+        });
+    });
+}
+
+/**
  * Function to repeatetly send rocketChatClient.users.list()
  * to iterate over result pagination (default max count = 100)
  * until final page is received
@@ -143,7 +181,7 @@ var rocketChatClient = new RocketChatClient(config);
 // Authenticate using admin credentials stored in config object
 rocketChatClient.authentication.login(config.username, config.password, function(err, body) {
 	if (!err) {
-        sendChannelsListApiRequest();
+        sendGroupsListApiRequest();
     } else {
         error(err);
 	}
