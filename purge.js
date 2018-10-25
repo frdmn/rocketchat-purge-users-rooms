@@ -268,6 +268,8 @@ if (program.channels || program.groups || program.users) {
                             console.log('Channels deleted!');
                             cback(null);
                         });
+                    } else {
+                        cback(null);
                     }
                 },
                 function(cback){
@@ -276,6 +278,8 @@ if (program.channels || program.groups || program.users) {
                             console.log('Groups deleted!');
                             cback(null);
                         });
+                    } else {
+                        cback(null);
                     }
                 },
                 function(cback){
@@ -284,6 +288,8 @@ if (program.channels || program.groups || program.users) {
                             console.log('Users deleted!');
                             cback(null);
                         });
+                    } else {
+                        cback(null);
                     }
                 }
             ], function () {
