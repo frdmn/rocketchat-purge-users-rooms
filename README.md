@@ -38,9 +38,9 @@ CLI tool to purge Rocket.Chat users/rooms
 
 Options:
 -V, --version   output the version number
--c, --channels  Purge all (public) channels
+-c, --channels  Purge all (public) channels, except default ones
 -g, --groups    Purge all (private) groups
--u, --users     Purge all users except users of roles "admin" and "bot"
+-u, --users     Purge all users, except users of roles "admin" and "bot"
 -h, --help      output usage information
 error:  No option passed. Aborting...
 ```

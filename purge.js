@@ -245,9 +245,9 @@ var channelArray = [],
 program
     .version(packagejson.version)
     .description(packagejson.description)
-    .option('-c, --channels', 'Purge all (public) channels')
+    .option('-c, --channels', 'Purge all (public) channels, except default ones')
     .option('-g, --groups', 'Purge all (private) groups')
-    .option('-u, --users', 'Purge all users except users of roles "admin" and "bot"')
+    .option('-u, --users', 'Purge all users, except users of roles "admin" and "bot"')
     .parse(process.argv);
 
 // Load configuration object for RocketChat API from JSON
