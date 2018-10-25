@@ -12,7 +12,7 @@ var fs = require('fs'),
  */
 function success(message){
     console.log(message);
-    return process.exit(1);
+    return process.exit(0);
 }
 
 /**
