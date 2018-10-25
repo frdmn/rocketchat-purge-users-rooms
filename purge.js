@@ -1,4 +1,4 @@
-    var fs = require('fs'),
+var fs = require('fs'),
     RocketChatApi = require('rocketchat').RocketChatApi,
     RocketChatClient = require('rocketchat').RocketChatClient,
     async = require('async'),
@@ -56,7 +56,7 @@ function listChannelsApi(offset = 0, callback){
 
             // Callback to let eachSeries() know about current channel processing
             return cb(null);
-        },function(err) {
+        }, function(err) {
             var channelsTotal = channelArray.length + channelArrayExcludes.length;
 
             // Iteration completed
@@ -122,7 +122,7 @@ function listGroupsApi(offset = 0, callback){
 
             // Callback to let eachSeries() know about current group processing
             return cb(null);
-        },  function(err) {
+        }, function(err) {
             // Iteration completed
             console.log("Added " + groupArray.length + " to the queue...");
             // Check if there more groups that needs to be processed (with another API request)
@@ -191,7 +191,7 @@ function listUsersApi(offset = 0, callback){
 
             // Callback to let eachSeries() know about current user processing
             return cb(null);
-        },function(err) {
+        }, function(err) {
             var usersTotal = userArray.length + userArrayExcludes.length;
 
             // Iteration completed
