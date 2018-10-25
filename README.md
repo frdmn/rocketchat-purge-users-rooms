@@ -49,24 +49,65 @@ error:  No option passed. Aborting...
 
 ```shell
 $ node purge.js -c -g -u
+[channels] Starting to search for possible channels to purge...
+[channels] Added 2 to the queue...
+[channels] Queue contains 2 elements in total.
+[channels] Deleted #zDykSmzvRuekbS4oG
+[channels] Deleted #zagMn5D7mLWxu3XbB
+[channels] purge completed
+[groups] Starting to search for possible groups to purge...
+[groups] Added 3 to the queue...
+[groups] Queue contains 3 elements in total.
+[groups] Deleted #96koEnrof74XEDcFA
+[groups] Deleted #fokfsYpFHs4TD2eTs
+[groups] Deleted #9gygaNdNNfo7bJR2C
+[groups] purge completed
+[users] Starting to search for possible users to purge...
+[users] Added 2 to the queue...
+[users] Queue contains 2 elements in total.
+[users] Deleted #ZdpW2JKHSPmwunkkx
+[users] Deleted #b5xbYSCzbrLa5z2X7
+[users] purge completed
+[general] purge process completed
 ```
 
 #### Purge public channels
 
 ```shell
 $ node purge.js -c
+[channels] Starting to search for possible channels to purge...
+[channels] Added 2 to the queue...
+[channels] Queue contains 2 elements in total.
+[channels] Deleted #zDykSmzvRuekbS4oG
+[channels] Deleted #zagMn5D7mLWxu3XbB
+[channels] purge completed
+[general] purge process completed
 ```
 
 #### Purge private groups
 
 ```shell
 $ node purge.js -g
+[groups] Starting to search for possible groups to purge...
+[groups] Added 3 to the queue...
+[groups] Queue contains 3 elements in total.
+[groups] Deleted #96koEnrof74XEDcFA
+[groups] Deleted #fokfsYpFHs4TD2eTs
+[groups] Deleted #9gygaNdNNfo7bJR2C
+[groups] purge completed
 ```
 
 #### Purge users
 
 ```shell
 $ node purge.js -u
+[users] Starting to search for possible users to purge...
+[users] Added 2 to the queue...
+[users] Queue contains 2 elements in total.
+[users] Deleted #ZdpW2JKHSPmwunkkx
+[users] Deleted #b5xbYSCzbrLa5z2X7
+[users] purge completed
+[general] purge process completed
 ```
 
 ## Contributing
