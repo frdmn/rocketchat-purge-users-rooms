@@ -23,7 +23,7 @@ function success(message){
  * @return {Object} process - End process with exit code
  */
 function error(err, code = 1){
-    console.log("error: ", err);
+    console.log("Error: ", err);
     return process.exit(code);
 }
 
@@ -60,14 +60,14 @@ function listChannelsApi(offset = 0, callback){
             var channelsTotal = channelArray.length + channelArrayExcludes.length;
 
             // Iteration completed
-            console.log("Added " + channelArray.length + " to the queue...");
+            console.log("[channels] Added " + channelArray.length + " to the queue...");
             // Check if there more channels that needs to be processed (with another API request)
             if (channelsTotal < total) {
                 listChannelsApi({"offset":channelsTotal, "count":count}, function(){
                     return callback(true);
                 });
             } else if(channelsTotal === total){
-                console.log('Success! Found ' + channelArray.length + ' channels in total.');
+                console.log('[channels] Queue contains ' + channelArray.length + ' elements in total.');
 
                 async.eachSeries(channelArray, function(channel, cb){
                     deleteChannelApi(channel, function(){
@@ -89,10 +89,10 @@ function listChannelsApi(offset = 0, callback){
 function deleteChannelApi(id, callback){
     rocketChatClient.channels.delete(id, function (err, body) {
         if (!err) {
-            console.log('Deleted channel #' + id);
+            console.log('[channels] Deleted #' + id);
             return callback(true);
         } else {
-            console.log('Couldn\'t delete channel #' + id);
+            console.log('[channels] Couldn\'t channel #' + id);
             return callback(false);
         }
     })
@@ -124,14 +124,14 @@ function listGroupsApi(offset = 0, callback){
             return cb(null);
         }, function(err) {
             // Iteration completed
-            console.log("Added " + groupArray.length + " to the queue...");
+            console.log("[groups] Added " + groupArray.length + " to the queue...");
             // Check if there more groups that needs to be processed (with another API request)
             if (groupArray.length < total) {
                 listGroupsApi({"offset":groupArray.length, "count":count}, function(){
                     return callback(true);
                 });
             } else if(groupArray.length === total){
-                console.log('Success! Found ' + groupArray.length + ' groups in total.');
+                console.log('[groups] Queue contains ' + groupArray.length + ' elements in total.');
 
                 async.eachSeries(groupArray, function(group, cb){
                     deleteGroupApi(group, function(){
@@ -153,10 +153,10 @@ function listGroupsApi(offset = 0, callback){
 function deleteGroupApi(id, callback){
     rocketChatClient.groups.delete(id, function (err, body) {
         if (!err) {
-            console.log('Deleted group #' + id);
+            console.log('[groups] Deleted #' + id);
             return callback(true);
         } else {
-            console.log('Couldn\'t delete group #' + id);
+            console.log('[groups] Couldn\'t delete #' + id);
             return callback(false);
         }
     })
@@ -195,14 +195,14 @@ function listUsersApi(offset = 0, callback){
             var usersTotal = userArray.length + userArrayExcludes.length;
 
             // Iteration completed
-            console.log("Added " + userArray.length + " to the queue...");
+            console.log("[users] Added " + userArray.length + " to the queue...");
             // Check if there more users that needs to be processed (with another API request)
             if (usersTotal < total) {
                 listUsersApi(usersTotal, count, function(){
                     return callback(true);
                 });
             } else if(usersTotal === total){
-                console.log('Success! Found ' + userArray.length + ' users in total.');
+                console.log('[users] Queue contains ' + userArray.length + ' elements in total.');
 
                 async.eachSeries(userArray, function(user, cb){
                     deleteUserApi(user, function(){
@@ -224,10 +224,10 @@ function listUsersApi(offset = 0, callback){
 function deleteUserApi(id, callback){
     rocketChatClient.users.delete(id, function (err, body) {
         if (!err) {
-            console.log('Deleted user #' + id);
+            console.log('[users] Deleted #' + id);
             return callback(true);
         } else {
-            console.log('Couldn\'t delete user #' + id);
+            console.log('[users] Couldn\'t delete #' + id);
             return callback(false);
         }
     })
@@ -264,8 +264,9 @@ if (program.channels || program.groups || program.users) {
             async.series([
                 function(cback){
                     if (program.channels) {
+                        console.log('[channels] Starting to search for possible channels to purge...')
                         listChannelsApi(null, function(){
-                            console.log('Channels deleted!');
+                        console.log('[channels] purge completed')
                             cback(null);
                         });
                     } else {
@@ -274,8 +275,9 @@ if (program.channels || program.groups || program.users) {
                 },
                 function(cback){
                     if(program.groups){
+                        console.log('[groups] Starting to search for possible groups to purge...')
                         listGroupsApi(null, function(){
-                            console.log('Groups deleted!');
+                        console.log('[groups] purge completed')
                             cback(null);
                         });
                     } else {
@@ -284,8 +286,9 @@ if (program.channels || program.groups || program.users) {
                 },
                 function(cback){
                     if(program.users){
+                        console.log('[users] Starting to search for possible users to purge...')
                         listUsersApi(null, function(){
-                            console.log('Users deleted!');
+                        console.log('[users] purge completed')
                             cback(null);
                         });
                     } else {
@@ -293,7 +296,7 @@ if (program.channels || program.groups || program.users) {
                     }
                 }
             ], function () {
-                console.log('done');
+                success('[general] purge process completed');
             });
         } else {
             error(err);
@@ -301,5 +304,5 @@ if (program.channels || program.groups || program.users) {
     })
 } else {
     program.outputHelp();
-    error('No option passed. Aborting...')
+    error('no option passed. Aborting...')
 }
